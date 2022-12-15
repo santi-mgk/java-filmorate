@@ -27,6 +27,6 @@ public class Film {
 
     @Min(value = 1, message = "Неправильная продолжительность фильма.")
     @Positive
-    private int durationInMinutes;
+    private int duration;
 
 }

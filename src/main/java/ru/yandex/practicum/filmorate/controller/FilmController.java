@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exception.ValidateException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
 
     @PostMapping
-    public Film createFilm(@RequestBody Film film) {
+    public Film createFilm(@Valid @RequestBody Film film) {
 
         validate(film);
 
@@ -39,7 +40,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) {
+    public Film updateFilm(@Valid @RequestBody Film film) {
 
         validate(film);
 
@@ -67,7 +68,7 @@ public class FilmController {
             log.debug(film.getName() + ": Release date < 28.12.1895.");
             throw new ValidateException(film.getName() + ": Release date < 28.12.1895.");
         }
-        if (film.getDurationInMinutes() <= 0) {
+        if (film.getDuration() <= 0) {
             log.debug(film.getName() + ": Duration must be > 0.");
             throw new ValidateException(film.getName() + ": Duration must be > 0.");
         }

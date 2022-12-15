@@ -26,7 +26,7 @@ public class FilmControllerTest {
                 .id(1)
                 .description("test description")
                 .releaseDate(LocalDate.now().minusDays(30))
-                .durationInMinutes(100)
+                .duration(100)
                 .build();
 
         final ValidateException ex = assertThrows(
@@ -45,7 +45,7 @@ public class FilmControllerTest {
                 .id(1)
                 .description(longDescription)
                 .releaseDate(LocalDate.now().minusDays(30))
-                .durationInMinutes(100)
+                .duration(100)
                 .build();
 
         final ValidateException ex = assertThrows(
@@ -63,7 +63,7 @@ public class FilmControllerTest {
                 .id(1)
                 .description("Test description")
                 .releaseDate(LocalDate.now().minusYears(150))
-                .durationInMinutes(100)
+                .duration(100)
                 .build();
 
         final ValidateException ex = assertThrows(
@@ -81,7 +81,7 @@ public class FilmControllerTest {
                 .id(1)
                 .description("Test description")
                 .releaseDate(LocalDate.now().minusYears(1))
-                .durationInMinutes(-1)
+                .duration(-1)
                 .build();
 
         final ValidateException ex = assertThrows(
