@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exception.ValidateException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,25 +27,12 @@ public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        if ((!user.getEmail().contains("@")) || (user.getEmail().isBlank()) || (user.getEmail().isEmpty())) {
-            log.error("User" + user.getLogin() + " not created. Email is empty or no symbol '@'.");
-            throw new ValidateException("User" + user.getLogin() + " not created. Email is empty or no symbol '@'.");
-        }  else if ((user.getLogin().contains(" ")) || (user.getLogin().isEmpty()) || (user.getLogin().isBlank())) {
-            log.error("User " + user.getLogin() + " with email= " + user.getEmail() + " not created. " +
-                    "Login is empty or there space.");
-            throw new ValidateException("User " + user.getLogin() + " with email= " + user.getEmail() + " not created. " +
-                    "Login is empty or there space.");
-        } else if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error("User" + user.getLogin() + " not created. Birthday > current date.");
-            throw new ValidateException("User" + user.getLogin() + " not created. Birthday > current date.");
-        }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
+    public User createUser(@Valid @RequestBody User user) {
+
+        validate(user);
 
         if (user.getId() == 0) {
-            user.setId(getnextId());
+            user.setId(getNextId());
         }
         users.put(user.getId(), user);
         log.info("User " + user.getName() + " with id= " + user.getId() + " created.");
@@ -53,25 +41,12 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@Valid @RequestBody User user) {
+
+        validate(user);
         if (!users.containsKey(user.getId())) {
-            log.error(user.getName() + " with id = " + user.getId() + " not found.");
-            throw new ValidateException(user.getName() + " with id = " + user.getId() + " not found.");
-        }
-        if (!user.getEmail().contains("@")) {
-            log.error("User" + user.getLogin() + " not updated. Email is empty or no symbol '@'.");
-            throw new ValidateException("User" + user.getLogin() + " not updated. Email is empty or no symbol '@'.");
-        } else if (user.getLogin().contains(" ")) {
-            log.error("User " + user.getLogin() + " with email= " + user.getEmail() + " not updated. " +
-                    "Login is empty or there space.");
-            throw new ValidateException("User " + user.getLogin() + " with email= " + user.getEmail() + " not updated. " +
-                    "Login is empty or there space.");
-        } else if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error("User" + user.getLogin() + " not updated. Birthday > current date.");
-            throw new ValidateException("User" + user.getLogin() + " not updated. Birthday > current date.");
-        }
-        if (user.getName().equals("")) {
-            user.setName(user.getLogin());
+            log.debug(user.getLogin() + ": user not found.");
+            throw new ValidateException(user.getLogin() + ": user not found.");
         }
 
         users.put(user.getId(), user);
@@ -80,12 +55,33 @@ public class UserController {
         return users.get(user.getId());
     }
 
+    private void validate(User user) {
+
+        if (!user.getEmail().contains("@")) {
+            log.debug(user.getLogin() + ": email is empty or no symbol '@'.");
+            throw new ValidateException(user.getLogin() + ": email is empty or no symbol '@'.");
+        }
+        if (user.getLogin().contains(" ") || user.getLogin().isEmpty()) {
+            log.debug("Login '" + user.getLogin() + "' with email= " + user.getEmail() + ": login is empty or there space.");
+            throw new ValidateException("Login '" + user.getLogin() + "' with email= " + user.getEmail() + ": login is empty or there space.");
+        }
+        if (user.getBirthday().isAfter(LocalDate.now())) {
+            log.debug(user.getLogin() + ": birthday > current date.");
+            throw new ValidateException(user.getLogin() + ": birthday > current date.");
+        }
+        if (user.getName() == null || user.getName().isBlank() || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+    }
+
     @GetMapping
     public Collection<User> findAllUsers() {
         return users.values();
     }
 
-    public int getnextId() {
+    private int getNextId() {
         return ++id;
     }
+
+
 }

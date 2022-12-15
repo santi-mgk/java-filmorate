@@ -22,25 +22,15 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
 
+    private static final LocalDate BORDER_DATE_FOR_FILMS = LocalDate.of(1895, 12, 28);
     private int id = 0;
     private final Map<Integer, Film> films = new HashMap<>();
-    private static final LocalDate BORDER_DATE_FOR_FILMS = LocalDate.of(1895, 12, 28);
 
     @PostMapping
     public Film createFilm(@RequestBody Film film) {
-        if (film.getName().isEmpty() || film.getName().isBlank() || film.getName() == null) {
-            log.error("Name film is empty.");
-            throw new ValidateException("Name film is empty.");
-        } else if (film.getDescription().length() > 200) {
-            log.error("Film " + film.getName() + " not created. Description film >200 symbols");
-            throw new ValidateException("Film " + film.getName() + " not created. Description film >200 symbols");
-        } else if (film.getReleaseDate().isBefore(BORDER_DATE_FOR_FILMS)) {
-            log.error("Film " + film.getName() + " not created. Release date < 28.12.1895.");
-            throw new ValidateException("Film " + film.getName() + " not created. Release date < 28.12.1895.");
-        } else if (film.getDuration() <= 0) {
-            log.error("Film " + film.getName() + " not created. Duration must be > 0.");
-            throw new ValidateException("Film " + film.getName() + " not created. Duration must be > 0.");
-        }
+
+        validate(film);
+
         film.setId(getNextId());
         films.put(film.getId(), film);
         log.info("Film " + film.getName() + " created.");
@@ -50,24 +40,37 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@RequestBody Film film) {
+
+        validate(film);
+
         if (!films.containsKey(film.getId())) {
-            log.error(film.getName() + " with id = " + film.getId() + " not found.");
-            throw new ValidateException(film.getName() + " with id = " + film.getId() + " not found.");
+            log.debug(film.getName() + ": film not found.");
+            throw new ValidateException(film.getName() + ": film not found.");
         }
-        if (film.getDescription().length() > 200) {
-            log.error("Film " + film.getName() + " not updated. Description film >200 symbols");
-            throw new ValidateException("Film " + film.getName() + " not updated. Description film >200 symbols");
-        } else if (film.getReleaseDate().isBefore(BORDER_DATE_FOR_FILMS)) {
-            log.error("Film " + film.getName() + " not updated. Release date < 28.12.1895.");
-            throw new ValidateException("Film " + film.getName() + " not updated. Release date < 28.12.1895.");
-        } else if (film.getDuration() <= 0) {
-            log.error("Film " + film.getName() + " not updated. Duration must be > 0.");
-            throw new ValidateException("Film " + film.getName() + " not updated. Duration must be > 0.");
-        }
+
         films.put(film.getId(), film);
         log.info("Film " + film.getName() + " updated.");
 
         return film;
+    }
+
+    private void validate(Film film) {
+        if (film.getName().isBlank() || film.getName().isEmpty()) {
+            log.debug("Name film is empty.");
+            throw new ValidateException("Name film is empty.");
+        }
+        if (film.getDescription().length() > 200) {
+            log.debug(film.getName() + ": description >200 symbols");
+            throw new ValidateException(film.getName() + ": description >200 symbols");
+        }
+        if (film.getReleaseDate().isBefore(BORDER_DATE_FOR_FILMS)) {
+            log.debug(film.getName() + ": Release date < 28.12.1895.");
+            throw new ValidateException(film.getName() + ": Release date < 28.12.1895.");
+        }
+        if (film.getDurationInMinutes() <= 0) {
+            log.debug(film.getName() + ": Duration must be > 0.");
+            throw new ValidateException(film.getName() + ": Duration must be > 0.");
+        }
     }
 
     @GetMapping
@@ -75,7 +78,7 @@ public class FilmController {
         return films.values();
     }
 
-    public int getNextId() {
+    private int getNextId() {
         return ++id;
     }
 }
