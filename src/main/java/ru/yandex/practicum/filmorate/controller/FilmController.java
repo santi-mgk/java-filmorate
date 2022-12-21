@@ -56,21 +56,9 @@ public class FilmController {
     }
 
     private void validate(Film film) {
-        if (film.getName().isBlank() || film.getName().isEmpty()) {
-            log.debug("Name film is empty.");
-            throw new ValidateException("Name film is empty.");
-        }
-        if (film.getDescription().length() > 200) {
-            log.debug(film.getName() + ": description >200 symbols");
-            throw new ValidateException(film.getName() + ": description >200 symbols");
-        }
         if (film.getReleaseDate().isBefore(BORDER_DATE_FOR_FILMS)) {
             log.debug(film.getName() + ": Release date < 28.12.1895.");
             throw new ValidateException(film.getName() + ": Release date < 28.12.1895.");
-        }
-        if (film.getDuration() <= 0) {
-            log.debug(film.getName() + ": Duration must be > 0.");
-            throw new ValidateException(film.getName() + ": Duration must be > 0.");
         }
     }
 

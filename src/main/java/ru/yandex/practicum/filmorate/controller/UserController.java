@@ -30,20 +30,26 @@ public class UserController {
     public User createUser(@Valid @RequestBody User user) {
 
         validate(user);
-
-        if (user.getId() == 0) {
-            user.setId(getNextId());
+        if (user.getName() == null || user.getName().isBlank() || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
         }
+
+        user.setId(getNextId());
+
         users.put(user.getId(), user);
         log.info("User " + user.getName() + " with id= " + user.getId() + " created.");
 
-          return users.get(user.getId());
+        return users.get(user.getId());
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
 
         validate(user);
+        if (user.getName() == null || user.getName().isBlank() || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+
         if (!users.containsKey(user.getId())) {
             log.debug(user.getLogin() + ": user not found.");
             throw new ValidateException(user.getLogin() + ": user not found.");
@@ -56,21 +62,9 @@ public class UserController {
     }
 
     private void validate(User user) {
-
-        if (!user.getEmail().contains("@")) {
-            log.debug(user.getLogin() + ": email is empty or no symbol '@'.");
-            throw new ValidateException(user.getLogin() + ": email is empty or no symbol '@'.");
-        }
-        if (user.getLogin().contains(" ") || user.getLogin().isEmpty()) {
+        if (user.getLogin().contains(" ")) {
             log.debug("Login '" + user.getLogin() + "' with email= " + user.getEmail() + ": login is empty or there space.");
             throw new ValidateException("Login '" + user.getLogin() + "' with email= " + user.getEmail() + ": login is empty or there space.");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.debug(user.getLogin() + ": birthday > current date.");
-            throw new ValidateException(user.getLogin() + ": birthday > current date.");
-        }
-        if (user.getName() == null || user.getName().isBlank() || user.getName().isEmpty()) {
-            user.setName(user.getLogin());
         }
     }
 

@@ -16,16 +16,15 @@ public class Film {
 
     private int id;
 
-    @NotBlank(message = "Неправильное название фильма.")
+    @NotBlank(message = "Invalid name film.")
     private String name;
 
-    @NotNull(message = "Отсутствует описание фильма.")
-    @Size(max = 200, message = "слишком длинное описание, больше 200 символов.")
+    @NotNull(message = "Not found description film.")
+    @Size(max = 200, message = "description film must be < 200 characters.")
     private String description;
 
     private LocalDate releaseDate;
 
-    @Min(value = 1, message = "Неправильная продолжительность фильма.")
     @Positive
     private int duration;
 

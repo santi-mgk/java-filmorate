@@ -7,7 +7,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
@@ -16,17 +15,17 @@ public class User {
 
     private int id;
 
-    @NotBlank(message = "Отсутствует email")
-    @Email(message = "Некорректный email.")
+    @NotNull(message = "Email not found")
+    @Email(message = "Email invalid.")
     private String email;
 
-    @NotBlank(message = "Отсутствует логин.")
+    @NotBlank(message = "Login not found.")
     private String login;
 
     private String name;
 
-    @NotNull(message = "не указана дата рождения.")
-    @Past(message = "Некорректная дата рождения.")
+    @NotNull(message = "Birthday not found.")
+    @Past(message = "Birthday invalid.")
     private LocalDate birthday;
 
 }

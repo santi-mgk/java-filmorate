@@ -39,7 +39,7 @@ public class FilmControllerTest {
 
     @Test
     void longFilmDescriptionTest() {
-        String longDescription = fillString(201, 'r');
+        String longDescription = fillString(201, "r");
         film = Film.builder()
                 .name("Test")
                 .id(1)
@@ -92,11 +92,7 @@ public class FilmControllerTest {
         assertEquals(ex.getMessage(), "Test: Duration must be > 0.");
     }
 
-    private String fillString(int count,char c) {
-        StringBuilder sb = new StringBuilder(count);
-        for(int i=0; i<count; i++) {
-            sb.append(c);
-        }
-        return sb.toString();
+    private String fillString(int count,String c) {
+        return c.repeat(count);
     }
 }
