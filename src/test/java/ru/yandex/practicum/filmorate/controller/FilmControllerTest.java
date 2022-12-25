@@ -31,7 +31,7 @@ public class FilmControllerTest {
 
         filmController.createFilm(film);
 
-        assertEquals(filmController.findAllFilms().size(), 0);
+        assertEquals(filmController.findAllFilms().size(), 1);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class FilmControllerTest {
 
         filmController.createFilm(film);
 
-        assertEquals(filmController.findAllFilms().size(), 0);
+        assertEquals(filmController.findAllFilms().size(), 1);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class FilmControllerTest {
                 () -> filmController.createFilm(film)
         );
 
-        assertEquals(ex.getMessage(), "Test: Release date < 28.12.1895");
+        assertEquals(ex.getMessage(), "Test: Release date < 28.12.1895.");
     }
 
     @Test
@@ -80,7 +80,7 @@ public class FilmControllerTest {
 
         filmController.createFilm(film);
 
-        assertEquals(filmController.findAllFilms().size(), 0);
+        assertEquals(filmController.findAllFilms().size(), 1);
     }
 
     private String fillString(int count,String c) {

@@ -33,7 +33,7 @@ public class UserControllerTest {
 
         userController.createUser(user);
 
-        assertEquals(userController.findAllUsers().size(), 0);
+        assertEquals(userController.findAllUsers().size(), 1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class UserControllerTest {
 
         userController.createUser(user);
 
-        assertEquals(userController.findAllUsers().size(), 0);
+        assertEquals(userController.findAllUsers().size(), 1);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class UserControllerTest {
 
         userController.createUser(user);
 
-        assertEquals(userController.findAllUsers().size(), 0);
+        assertEquals(userController.findAllUsers().size(), 1);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class UserControllerTest {
 
         userController.createUser(user);
 
-        assertEquals(userController.findAllUsers().size(), 0);
+        assertEquals(userController.findAllUsers().size(), 1);
     }
 
     @Test
