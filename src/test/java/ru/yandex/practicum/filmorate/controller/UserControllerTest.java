@@ -31,12 +31,9 @@ public class UserControllerTest {
                 .birthday(LocalDate.now().minusYears(20))
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> userController.createUser(user)
-        );
+        userController.createUser(user);
 
-        assertEquals(ex.getMessage(), "Test: email is empty or no symbol '@'.");
+        assertEquals(userController.findAllUsers().size(), 0);
     }
 
     @Test
@@ -49,12 +46,9 @@ public class UserControllerTest {
                 .birthday(LocalDate.now().minusYears(20))
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> userController.createUser(user)
-        );
+        userController.createUser(user);
 
-        assertEquals(ex.getMessage(), "Test: email is empty or no symbol '@'.");
+        assertEquals(userController.findAllUsers().size(), 0);
     }
 
     @Test
@@ -67,12 +61,9 @@ public class UserControllerTest {
                 .birthday(LocalDate.now().minusYears(20))
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> userController.createUser(user)
-        );
+        userController.createUser(user);
 
-        assertEquals(ex.getMessage(), "Login '' with email= test@yandex.ru: login is empty or there space.");
+        assertEquals(userController.findAllUsers().size(), 0);
     }
 
     @Test
@@ -103,12 +94,9 @@ public class UserControllerTest {
                 .birthday(LocalDate.now().plusYears(1))
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> userController.createUser(user)
-        );
+        userController.createUser(user);
 
-        assertEquals(ex.getMessage(), "User: birthday > current date.");
+        assertEquals(userController.findAllUsers().size(), 0);
     }
 
     @Test
@@ -120,8 +108,6 @@ public class UserControllerTest {
                 .name("")
                 .birthday(LocalDate.now().minusYears(12))
                 .build();
-
-        assertTrue(user.getName().isBlank());
 
         userController.createUser(user);
 

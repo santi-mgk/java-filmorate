@@ -29,12 +29,9 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> filmController.createFilm(film)
-        );
+        filmController.createFilm(film);
 
-        assertEquals(ex.getMessage(), "Name film is empty.");
+        assertEquals(filmController.findAllFilms().size(), 0);
     }
 
     @Test
@@ -48,12 +45,9 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> filmController.createFilm(film)
-        );
+        filmController.createFilm(film);
 
-        assertEquals(ex.getMessage(), "Test: description >200 symbols");
+        assertEquals(filmController.findAllFilms().size(), 0);
     }
 
     @Test
@@ -71,7 +65,7 @@ public class FilmControllerTest {
                 () -> filmController.createFilm(film)
         );
 
-        assertEquals(ex.getMessage(), "Test: Release date < 28.12.1895.");
+        assertEquals(ex.getMessage(), "Test: Release date < 28.12.1895");
     }
 
     @Test
@@ -84,12 +78,9 @@ public class FilmControllerTest {
                 .duration(-1)
                 .build();
 
-        final ValidateException ex = assertThrows(
-                ValidateException.class,
-                () -> filmController.createFilm(film)
-        );
+        filmController.createFilm(film);
 
-        assertEquals(ex.getMessage(), "Test: Duration must be > 0.");
+        assertEquals(filmController.findAllFilms().size(), 0);
     }
 
     private String fillString(int count,String c) {
