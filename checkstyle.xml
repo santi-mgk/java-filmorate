@@ -29,7 +29,7 @@
 			<property name="tokens" value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
 		</module>
 		<module name="RegexpSinglelineJava">
-			<property name="format" value="^[ \t]*[{]"/>
+			<property name="format" value="^[     ]*[{]"/>
 			<property name="ignoreComments" value="true"/>
 			<property name="message" value="Leading braces"/>
 		</module>
@@ -138,7 +138,7 @@
 		</module>
 		<!-- No trailing whitespace -->
 		<module name="Regexp">
-			<property name="format" value="[ \t]+$"/>
+			<property name="format" value="[     ]+$"/>
 			<property name="illegalPattern" value="true"/>
 			<property name="message" value="Trailing whitespace"/>
 		</module>
